@@ -11,6 +11,7 @@ public:
 	warehouse(string category, string name, string maker, int price, int quantity, string date, int number);
 	~warehouse();
 	void print_menu();
+	void print_data();
 	void set_data();
 	void write_file(vector<warehouse>& arr, string path);
 	void read_file(vector<warehouse>& arr, string path);
@@ -51,6 +52,9 @@ int main()
 			cout << "===================================================" << endl;
 			break;
 		case 3:
+			wh.read_file(arr, path);
+			cout << "Данные успешно считаны" << endl;
+			cout << "===================================================" << endl;
 			break;
 		case 4:
 			break;
@@ -122,6 +126,19 @@ void warehouse::print_menu()
 	cout << "8 - Сортировка по полю" << endl;
 	cout << "9 - Вывод данных" << endl;
 	cout << "10 - Выход из программы " << endl;
+	cout << "===================================================" << endl;
+}
+
+void warehouse::print_data()
+{
+	cout << "Объект класса warehouse" << endl;
+	cout << "Категория товара : " << this->category << endl;
+	cout << "Наименование товара : " << this->name << endl;
+	cout << "Название производителя : " << this->maker << endl;
+	cout << "Стоимость товара : " << this->price << endl;
+	cout << "Количество товара : " << this->quantity << endl;
+	cout << "Дата поступления : " << this->date << endl;
+	cout << "Номер ячейки : " << this->number << endl;
 	cout << "===================================================" << endl;
 }
 
