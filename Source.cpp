@@ -12,10 +12,16 @@ public:
 	~warehouse();
 	void print_menu();
 	void print_data();
+	void print_info();
+	void print_mm();
 	void set_data();
 	void write_file(vector<warehouse>& arr, string path);
 	void read_file(vector<warehouse>& arr, string path);
-
+	void delete_object(vector<warehouse>& arr);
+	void search_field(vector<warehouse>& arr);
+	void search_min(vector<warehouse>& arr);
+	void search_max(vector<warehouse>& arr);
+	void sort_field(vector<warehouse>& arr);
 private:
 	string category;//категория товара
 	string name;//наименование товара
@@ -33,9 +39,10 @@ int main()
 	int var_switch = 0;
 	string path = "data.txt";
 	bool exit = false;
+	wh.read_file(arr, path);
+	wh.print_menu();
 	while (!exit)
 	{
-		wh.print_menu();
 		cout << "Выберите режим : " << endl;
 		cin >> var_switch;
 		switch (var_switch)
@@ -57,16 +64,32 @@ int main()
 			cout << "===================================================" << endl;
 			break;
 		case 4:
+			wh.delete_object(arr);
+			wh.write_file(arr, path);
+			cout << "===================================================" << endl;
 			break;
 		case 5:
+			wh.search_field(arr);
+			cout << "===================================================" << endl;
 			break;
 		case 6:
+			wh.search_min(arr);
+			cout << "===================================================" << endl;
 			break;
 		case 7:
+			wh.search_max(arr);
+			cout << "===================================================" << endl;
 			break;
 		case 8:
+			wh.sort_field(arr);
+			cout << "Сортировка проведена успешна" << endl;
+			cout << "===================================================" << endl;
 			break;
 		case 9:
+			for (auto& el : arr)
+			{
+				wh.print_data();
+			}
 			break;
 		case 10:
 			cout << "===================================================" << endl;
@@ -132,32 +155,52 @@ void warehouse::print_menu()
 void warehouse::print_data()
 {
 	cout << "Объект класса warehouse" << endl;
-	cout << "Категория товара : " << this->category << endl;
-	cout << "Наименование товара : " << this->name << endl;
-	cout << "Название производителя : " << this->maker << endl;
-	cout << "Стоимость товара : " << this->price << endl;
-	cout << "Количество товара : " << this->quantity << endl;
-	cout << "Дата поступления : " << this->date << endl;
-	cout << "Номер ячейки : " << this->number << endl;
+	cout << "Категория товара : " << category << endl;
+	cout << "Наименование товара : " << name << endl;
+	cout << "Название производителя : " << maker << endl;
+	cout << "Стоимость товара : " << price << endl;
+	cout << "Количество товара : " << quantity << endl;
+	cout << "Дата поступления : " << date << endl;
+	cout << "Номер ячейки : " << number << endl;
 	cout << "===================================================" << endl;
+}
+
+void warehouse::print_info()
+{
+	cout << "Доступные поля" << endl;
+	cout << "1 - Категория товара" << endl;
+	cout << "2 - Наименование товара" << endl;
+	cout << "3 - Название производителя" << endl;
+	cout << "4 - Стоимость товара" << endl;
+	cout << "5 - Количество товара" << endl;
+	cout << "6 - Дата поступления" << endl;
+	cout << "7 - Номер ячейки" << endl;
+}
+
+void warehouse::print_mm()
+{
+	cout << "Доступные поля" << endl;
+	cout << "1 - Стоимость товара" << endl;
+	cout << "2 - Количество товара" << endl;
+	cout << "3 - Номер ячейка" << endl;
 }
 
 void warehouse::set_data()
 {
 	cout << "Введите категорию товара" << endl;
-	cin >> this->category;
+	cin >> category;
 	cout << "Введите наименование товара" << endl;
-	cin >> this->name;
+	cin >> name;
 	cout << "Введите название производителя" << endl;
-	cin >> this->maker;
+	cin >> maker;
 	cout << "Введите стоимость товара" << endl;
-	cin >> this->price;
+	cin >> price;
 	cout << "Введите количество товара" << endl;
-	cin >> this->quantity;
+	cin >> quantity;
 	cout << "Введите дату поступления" << endl;
-	cin >> this->date;
+	cin >> date;
 	cout << "Введите номер ячейки" << endl;
-	cin >> this->number;
+	cin >> number;
 }
 
 void warehouse::write_file(vector<warehouse>& arr, string path)
@@ -167,16 +210,16 @@ void warehouse::write_file(vector<warehouse>& arr, string path)
 	file.clear();
 	if (file.is_open())
 	{
-		file << arr.size();
+		file << arr.size() << endl;
 		for (auto& el : arr)
 		{
-			file << el.category;
-			file << el.name;
-			file << el.maker;
-			file << el.price;
-			file << el.quantity;
-			file << el.date;
-			file << el.number;
+			file << el.category<<endl;
+			file << el.name<<endl;
+			file << el.maker << endl;
+			file << el.price << endl;
+			file << el.quantity << endl;
+			file << el.date<<endl;
+			file << el.number << endl;
 		}
 		file.close();
 	}
@@ -212,9 +255,236 @@ void warehouse::read_file(vector<warehouse>& arr, string path)
 			w.number = stoi(field);
 			arr.push_back(w);
 		}
+		file.close();
 	}
 	else
 	{
 		cout << "Ошибка открытия файла" << endl;
+	}
+}
+
+void warehouse::delete_object(vector<warehouse>& arr)
+{
+	int count = 0;
+	int var = 0;
+	cout << "Доступные объекты для удаления" << endl;
+	for (auto& el : arr)
+	{
+		cout << "Объект " << count << endl;
+		count++;
+	}
+	cout << "Выберите объект для удаления" << endl;
+	cin >> var;
+	if (var >= 0 && var < arr.size())
+	{
+		arr.erase(arr.begin() + var);
+		cout << "Объект успешно удален" << endl;
+	}
+	else
+	{
+		cout << "Некорктный ввод " << endl;
+	}
+}
+
+void warehouse::search_field(vector<warehouse>& arr)
+{
+	warehouse w;
+	string field;
+	int var = 0;
+	bool check = false;
+	w.print_info();
+	cout << "Выберите необходимое поле" << endl;
+	cin >> var;
+	cout << "Введите данные для поиска " << endl;
+	cin >> field;
+	for (auto& el : arr)
+	{
+		switch (var)
+		{
+		case 1:
+			if (field == el.category)
+			{
+				el.print_data();
+				check = true;
+			}
+			break;
+		case 2:
+			if (field == el.date)
+			{
+				el.print_data();
+				check = true;
+			}
+			break;
+		case 3:
+			if (field == el.maker)
+			{
+				el.print_data();
+				check = true;
+			}
+			break;
+		case 4:
+			if (stoi(field) == el.price)
+			{
+				el.print_data();
+				check = true;
+			}
+			break;
+		case 5:
+			if (stoi(field) == el.quantity)
+			{
+				el.print_data();
+				check = true;
+			}
+			break;
+		case 6:
+			if (field == el.date)
+			{
+				el.print_data();
+				check = true;
+			}
+			break;
+		case 7:
+			if (stoi(field) == el.number)
+			{
+				el.print_data();
+				check = true;
+			}
+			break;
+		default:
+			cout << "Некоректный ввод" << endl;
+			break;
+		}
+	}
+	if (!check)
+	{
+		cout << "Ничего не найдено" << endl;
+	}
+}
+
+void warehouse::search_min(vector<warehouse>& arr)
+{
+	warehouse w;
+	int var = 0;
+	int min = 10000000;
+	w.print_mm();
+	cout << "Выберите поле для определения минимального" << endl;
+	cin >> var;
+	switch (var)
+	{
+	case 1:
+		for (auto& el : arr)
+		{
+			if (el.price < min)
+			{
+				min = el.price;
+			}
+		}
+		cout << "Минимальный элемент = " << min << endl;
+		break;
+	case 2:
+		for (auto& el : arr)
+		{
+			if (el.quantity < min)
+			{
+				min = el.quantity;
+			}
+		}
+		cout << "Минимальный элемент = " << min << endl;
+		break;
+	case 3:
+		for (auto& el : arr)
+		{
+			if (el.number < min)
+			{
+				min = el.number;
+			}
+		}
+		cout << "Минимальный элемент = " << min << endl;
+		break;
+	default:
+		cout << "Некоректный ввод" << endl;
+		break;
+	}
+}
+
+void warehouse::search_max(vector<warehouse>& arr)
+{
+	warehouse w;
+	int var = 0;
+	int max = 0;
+	w.print_mm();
+	cout << "Выберите поле для определения максимального" << endl;
+	cin >> var;
+	switch (var)
+	{
+	case 1:
+		for (auto& el : arr)
+		{
+			if (el.price > max)
+			{
+				max = el.price;
+			}
+		}
+		cout << "Максимальный элемент = " << max << endl;
+		break;
+	case 2:
+		for (auto& el : arr)
+		{
+			if (el.quantity > max)
+			{
+				max = el.quantity;
+			}
+		}
+		cout << "Максимальный элемент = " << max << endl;
+		break;
+	case 3:
+		for (auto& el : arr)
+		{
+			if (el.number > max)
+			{
+				max = el.number;
+			}
+		}
+		cout << "Максимальный элемент = " << max << endl;
+		break;
+	default:
+		cout << "Некоректный ввод" << endl;
+		break;
+	}
+}
+
+void warehouse::sort_field(vector<warehouse>& arr)
+{
+	warehouse w;
+	int var = 0;
+	w.print_info();
+	cout << "Выберите нужное поле" << endl;
+	cin >> var;
+	switch (var)
+	{
+	case 1:
+		sort(arr.begin(), arr.end(), [](const warehouse& w1, const warehouse& w2) {return w1.category < w2.category;});
+		break;
+	case 2:
+		sort(arr.begin(), arr.end(), [](const warehouse& w1, const warehouse& w2) {return w1.name < w2.name;});
+		break;
+	case 3:
+		sort(arr.begin(), arr.end(), [](const warehouse& w1, const warehouse& w2) {return w1.maker < w2.maker;});
+		break;
+	case 4:
+		sort(arr.begin(), arr.end(), [](const warehouse& w1, const warehouse& w2) {return w1.price < w2.price;});
+		break;
+	case 5:
+		sort(arr.begin(), arr.end(), [](const warehouse& w1, const warehouse& w2) {return w1.quantity < w2.quantity;});
+		break;
+	case 6:
+		sort(arr.begin(), arr.end(), [](const warehouse& w1, const warehouse& w2) {return w1.date < w2.date;});
+		break;
+	case 7:
+		sort(arr.begin(), arr.end(), [](const warehouse& w1, const warehouse& w2) {return w1.number < w2.number;});
+		break;
+	default:
+		cout << "Некорректный ввод" << endl;
+		break;
 	}
 }
