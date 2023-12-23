@@ -64,31 +64,73 @@ int main()
 			cout << "===================================================" << endl;
 			break;
 		case 4:
-			wh.delete_object(arr);
-			wh.write_file(arr, path);
+			if (!arr.empty())
+			{
+				wh.delete_object(arr);
+				wh.write_file(arr, path);
+			}
+			else
+			{
+				cout << "В векторе нет объектов" << endl;
+			}
 			cout << "===================================================" << endl;
 			break;
 		case 5:
-			wh.search_field(arr);
-			cout << "===================================================" << endl;
+			if(!arr.empty())
+			{ 
+				wh.search_field(arr);
+				cout << "===================================================" << endl;
+			}
+			else
+			{
+				cout << "В векторе нет объектов" << endl;
+			}
 			break;
 		case 6:
-			wh.search_min(arr);
-			cout << "===================================================" << endl;
+			if(!arr.empty())
+			{ 
+				wh.search_min(arr);
+				cout << "===================================================" << endl;
+			}
+			else
+			{
+				cout << "В векторе нет объектов" << endl;
+			}
 			break;
 		case 7:
-			wh.search_max(arr);
-			cout << "===================================================" << endl;
+			if(!arr.empty())
+			{ 
+				wh.search_max(arr);
+				cout << "===================================================" << endl;
+			}
+			else
+			{
+				cout << "В векторе нет объектов" << endl;
+			}
 			break;
 		case 8:
-			wh.sort_field(arr);
-			cout << "Сортировка проведена успешна" << endl;
-			cout << "===================================================" << endl;
+			if(!arr.empty())
+			{
+				wh.sort_field(arr);
+				cout << "Сортировка проведена успешна" << endl;
+				cout << "===================================================" << endl;
+			}
+			else
+			{
+				cout << "В векторе нет объектов" << endl;
+			}
 			break;
 		case 9:
-			for (auto& el : arr)
+			if (!arr.empty())
 			{
-				wh.print_data();
+				for (auto& el : arr)
+				{
+					el.print_data();
+				}
+			}
+			else
+			{
+				cout << "В векторе нет объектов" << endl;
 			}
 			break;
 		case 10:
